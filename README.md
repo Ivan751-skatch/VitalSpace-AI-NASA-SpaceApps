@@ -51,6 +51,6 @@ https://wokwi.com/projects/478783474764323841 Haz clic en el botón de Play (Ini
  **Simula una Emergencia**: Gira la perilla de radiación hacia la derecha o baja el oxígeno a menos de $90\%$. El sistema cambiará a ALERTA CRITICA, encenderá el LED rojo y activará la alarma sonora de inmediato.   
  
  ## 👥 Equipo VitalSpace AI
-  **Desarrollo y Prototipado**: Ivan y equipo VitalSpace AI
+  **Desarrollo y Prototipado**: Ivan y equipo VitalSpace AI.
   
-  **Evento Local**: Evento Universal — NASA Space Apps Challenge 2026   Proyecto desarrollado con pasión por la tecnología y la exploración espacial.
+  **Evento Local**: Evento Universal — NASA Space Apps Challenge 2026   Proyecto desarrollado con pasión por la tecnología   y la exploración espacial.
