@@ -52,4 +52,5 @@ https://wokwi.com/projects/478783474764323841 Haz clic en el botón de Play (Ini
  
  ## 👥 Equipo VitalSpace AI
   **Desarrollo y Prototipado**: Ivan y equipo VitalSpace AI
+  
   **Evento Local**: Evento Universal — NASA Space Apps Challenge 2026   Proyecto desarrollado con pasión por la tecnología y la exploración espacial.
