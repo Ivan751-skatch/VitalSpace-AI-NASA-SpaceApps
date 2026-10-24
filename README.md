@@ -3,7 +3,7 @@ Sistema de Monitoreo de Salud de la Tripulación y Radiación - NASA Space Apps 
 
 # 🚀 VitalSpace AI – Monitoreo de salud y radiación en tiempo real
 
-> **NASA Space Apps Challenge 2026** – *Desafío: Desarrollo de un software para monitorear la salud de los astronautas en misiones espaciales*[cite: 4]
+> **NASA Space Apps Challenge 2026** – *Desafío: Desarrollo de un software para monitorear la salud de los astronautas en misiones espaciales*
 
 ---
 
