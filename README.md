@@ -42,3 +42,14 @@ El sistema genera un flujo continuo de datos en formato **JSON**, puesto a dispo
   "alert": true
 }
 ```
+## 🧪 Pruébalo en vivo en Wokwi (Sin instalar nada)Entra a nuestra simulación pública en Wokwi: 
+
+https://wokwi.com/projects/478783474764323841 Haz clic en el botón de Play (Iniciar).
+
+ **Haz tus propias pruebas de estrés**:Estado Seguro: Mantén el oxígeno alto y la radiación baja. Verás el LED verde encendido y el estado OPTIMO en pantalla.  
+
+ **Simula una Emergencia**: Gira la perilla de radiación hacia la derecha o baja el oxígeno a menos de $90\%$. El sistema cambiará a ALERTA CRITICA, encenderá el LED rojo y activará la alarma sonora de inmediato.   
+ 
+ ## 👥 Equipo VitalSpace AI
+  **Desarrollo y Prototipado**: Ivan y equipo VitalSpace AI
+  **Evento Local**: Evento Universal — NASA Space Apps Challenge 2026   Proyecto desarrollado con pasión por la tecnología y la exploración espacial.
