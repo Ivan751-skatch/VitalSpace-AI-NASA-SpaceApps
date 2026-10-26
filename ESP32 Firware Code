@@ -1,0 +1,172 @@
+/*
+
+Project: VitalSpace AI - NASA Space Apps Challenge 2026
+File: sketch.ino
+Description: Autonomous bio-environmental monitoring, fall detection,
+and 3-state acoustic triage system for deep-space suits.
+Microcontroller: ESP32 DevKit V1
+
+*/
+
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <DHT.h>
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+
+// --- DISPLAY & SENSORS INITIALIZATION ---
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#define DHTPIN 15
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
+Adafruit_MPU6050 mpu;
+
+// --- PIN DEFINITIONS ---
+const int PIN_RAD = 34;        // Analog ADC: Radiation Sensor
+const int PIN_SPO2 = 35;       // Analog ADC: SpO2 & Heart Rate Sensor
+const int PIN_BUZZER = 25;     // PWM / Audio Output
+const int PIN_LED_RED = 26;    // Critical Alert Indicator
+const int PIN_LED_YELLOW = 32; // Caution Indicator
+const int PIN_LED_GREEN = 27;  // Optimal Status Indicator
+
+// --- TIMING & AUDIO CONTROL VARIABLES ---
+unsigned long lastYellowToneTime = 0;
+bool greenToneEmitted = false;
+
+void setup() {
+Serial.begin(115200);
+
+// Configure Output Pins
+pinMode(PIN_BUZZER, OUTPUT);
+pinMode(PIN_LED_RED, OUTPUT);
+pinMode(PIN_LED_YELLOW, OUTPUT);
+pinMode(PIN_LED_GREEN, OUTPUT);
+
+// Initialize I2C Bus (SDA = GPIO 21, SCL = GPIO 22)
+Wire.begin(21, 22);
+dht.begin();
+
+// Initialize MPU6050 Inertial Measurement Unit
+if (!mpu.begin()) {
+Serial.println("Warning: MPU6050 hardware not detected!");
+} else {
+mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+}
+
+// Initialize I2C LCD Display
+lcd.init();
+lcd.backlight();
+lcd.setCursor(0, 0);
+lcd.print("VitalSpace AI");
+lcd.setCursor(0, 1);
+lcd.print("System Ready...");
+delay(2000);
+lcd.clear();
+}
+
+void loop() {
+// 1. Read Analog Sensors (Radiation & SpO2)
+int rawRad = analogRead(PIN_RAD);
+int rawSpO2 = analogRead(PIN_SPO2);
+
+float temp = dht.readTemperature();
+if (isnan(temp)) temp = 22.0; // Fallback temperature value
+
+float radiation_mSv = map(rawRad, 0, 4095, 0, 500) / 10.0; // 0.0 to 50.0 mSv/h
+int spo2 = map(rawSpO2, 0, 4095, 70, 100);                  // 70% to 100%
+int heartRate = map(rawSpO2, 0, 4095, 140, 65);            // Physiological pulse compensation
+
+// 2. Read Accelerometer Data (MPU6050)
+sensors_event_t a, g, temp_mpu;
+mpu.getEvent(&a, &g, &temp_mpu);
+
+float accelMag = sqrt(a.acceleration.x * a.acceleration.x +
+a.acceleration.y * a.acceleration.y +
+a.acceleration.z * a.acceleration.z);
+float gForce = accelMag / 9.81; // Convert to G-Force
+
+// Detect Fall or High Kinetic Impact (>2.5g or <0.2g freefall)
+bool fallDetected = (gForce > 2.5 || gForce < 0.2);
+
+// 3. Triage Logic Evaluation
+bool isCritical = (spo2 < 90) || (radiation_mSv > 30.0) || fallDetected;
+bool isWarning  = (!isCritical) && ((spo2 >= 90 && spo2 <= 94) || (radiation_mSv >= 15.0 && radiation_mSv <= 30.0));
+
+// 4. Actuators & Acoustic Control
+if (isCritical) {
+digitalWrite(PIN_LED_RED, HIGH);
+digitalWrite(PIN_LED_YELLOW, LOW);
+digitalWrite(PIN_LED_GREEN, LOW);
+
+// RED: Continuous High-Pitched Emergency Tone (1200 Hz)
+tone(PIN_BUZZER, 1200, 400);
+
+greenToneEmitted = false;
+lastYellowToneTime = 0;
+
+
+}
+else if (isWarning) {
+digitalWrite(PIN_LED_RED, LOW);
+digitalWrite(PIN_LED_YELLOW, HIGH);
+digitalWrite(PIN_LED_GREEN, LOW);
+
+greenToneEmitted = false;
+
+// YELLOW: Periodic Caution Tone Every 2 Seconds (600 Hz)
+unsigned long currentMillis = millis();
+if (lastYellowToneTime == 0 || (currentMillis - lastYellowToneTime >= 2000)) {
+  tone(PIN_BUZZER, 600, 300);
+  lastYellowToneTime = currentMillis;
+}
+
+
+}
+else {
+digitalWrite(PIN_LED_RED, LOW);
+digitalWrite(PIN_LED_YELLOW, LOW);
+digitalWrite(PIN_LED_GREEN, HIGH);
+
+lastYellowToneTime = 0;
+
+// GREEN: Single Confirmation Beep (880 Hz)
+if (!greenToneEmitted) {
+  tone(PIN_BUZZER, 880, 200);
+  greenToneEmitted = true;
+}
+
+
+}
+
+// 5. Update LCD Screen
+lcd.setCursor(0, 0);
+if (fallDetected) {
+lcd.print("IMPACTO / CAIDA ");
+} else if (isCritical) {
+lcd.print("ALERTA CRITICA  ");
+} else if (isWarning) {
+lcd.print("PRECAUCION!     ");
+} else {
+lcd.print("ESTADO: OPTIMO  ");
+}
+
+lcd.setCursor(0, 1);
+lcd.print("SpO2:"); lcd.print(spo2); lcd.print("% G:"); lcd.print(gForce, 1);
+
+// 6. Serial JSON Telemetry Transmission
+Serial.print("{"spo2":"); Serial.print(spo2);
+Serial.print(","hr":"); Serial.print(heartRate);
+Serial.print(","rad":"); Serial.print(radiation_mSv, 1);
+Serial.print(","temp":"); Serial.print(temp, 2);
+Serial.print(","g_force":"); Serial.print(gForce, 2);
+Serial.print(","fall":"); Serial.print(fallDetected ? "true" : "false");
+Serial.print(","status":"");
+Serial.print(isCritical ? "CRITICAL" : (isWarning ? "WARNING" : "OPTIMAL"));
+Serial.println(""}");
+
+delay(1000);
+}
+
+
