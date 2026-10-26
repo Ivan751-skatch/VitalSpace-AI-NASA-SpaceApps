@@ -1,79 +1,45 @@
-Markdown
-# 🚀 VitalSpace AI — Monitoreo de Salud y Radiación en Tiempo Real
-> **NASA Space Apps Challenge 2026** — *Desafío: Desarrollo de Software para Monitorear la Salud de los Astronautas en Misiones Espaciales*
+# VitalSpace-AI-NASA-SpaceApps
+Crew Health & Radiation Monitoring System - NASA Space Apps Challenge 2026
+
+# 🚀 VitalSpace AI – Real-Time Health & Radiation Monitoring
+
+> **NASA Space Apps Challenge 2026** – *Challenge: Creating Software for Astronaut Health Monitoring in Space Missions*
 
 ---
 
-## 💡 ¿Por qué desarrollamos esto?
-Los viajes a la Luna o a Marte son fascinantes, pero el espacio es implacable. Cuando una tripulación se encuentra a millones de kilómetros de la Tierra, las señales de radio tardan entre varios minutos y horas en ir y volver. Ante una caída repentina de oxígeno, una radiación elevada o un impacto en microgravedad, **esperar instrucciones desde la Tierra no es una opción.**
+### 💡 Why did we build this?
 
-**VitalSpace AI** surge como una solución autónoma basada en **Edge Computing**. El sistema opera de manera local en el microcontrolador del traje espacial, analizando constantes fisiológicas y factores ambientales en tiempo real sin depender de conexión a Internet ni de estaciones de control en tierra.
+Travel to the Moon or Mars sounds fascinating, but space is unforgiving. When a crew is millions of kilometers away from Earth, a radio signal sent to Earth — and the response back — can take several minutes. If an astronaut's oxygen level drops suddenly, or if they are exposed to a high dose of radiation, **waiting for a response from Earth is not an option**.
+
+That is why we developed **VitalSpace AI**. Our goal was to create an autonomous solution based on *Edge Computing* — a system that does not rely on an internet connection or a ground station, but instead monitors vital signs in real time and makes immediate medical decisions.
 
 ---
 
-## 🛠️ ¿Cómo funciona?
+### 🛠️ How does it work?
 
-Utilizamos un microcontrolador **ESP32 DevKit V1** como centro de cómputo local. A él se integran sensores fisiológicos, ambientales e inerciales:
+We use an **ESP32** microcontroller as the "brain" of the system. Connected to it are various sensors simulating physical conditions during a space mission:
 
-| Componente | Función en el Espacio | Conexión ESP32 |
+| Component | Function in Space | ESP32 Pin Connection |
 | :--- | :--- | :--- |
-| **ESP32 DevKit V1** | Procesa telemetría y evalúa riesgos fisiológicos e inerciales en tiempo real. | — |
-| **Pantalla LCD 16x2 (I2C)** | Muestra diagnósticos directamente al astronauta en el visor o interfaz del traje. | SDA (GPIO 21) / SCL (GPIO 22) |
-| **Sensor MPU6050 (IMU)** | Mide aceleración triaxial, detectando caídas, impactos y falta de gravedad (fuerza G). | SDA (GPIO 21) / SCL (GPIO 22) |
-| **Sensor DHT22** | Mide la temperatura interna del microclima del traje espacial. | GPIO 15 |
-| **Potenciómetro SpO2** | Simula la saturación de oxígeno (70% - 100%) y frecuencia cardíaca (65 - 140 BPM). | GPIO 35 (ADC1) |
-| **Potenciómetro Radiación** | Simula el sensor de radiación ionizante acumulada (0.0 - 50.0 mSv/h). | GPIO 34 (ADC1) |
-| **LED Verde** | Indicador visual de estado nominal / óptimo. | GPIO 27 |
-| **LED Amarillo** | Indicador visual de advertencia / precaución. | GPIO 32 |
-| **LED Rojo** | Indicador visual de alerta crítica o impacto. | GPIO 26 |
-| **Buzzer Piezoeléctrico** | Emite alertas acústicas diferenciadas para evitar la fatiga por alarma. | GPIO 25 |
+| **ESP32 DevKit V1** | Processes telemetry data and evaluates physiological risks in real time. | — |
+| **16x2 LCD Display** | Displays diagnostic data directly to the astronaut (e.g., inside the visor or space suit). | SDA (GPIO 21) / SCL (GPIO 22) |
+| **DHT22 Sensor** | Measures temperature inside the space suit. | GPIO 15 |
+| **Potentiometer 1** | Simulates radiation dosimeter readings ($0$ to $50\text{ mSv/h}$). | GPIO 34 (ADC1) |
+| **Potentiometer 2** | Simulates oxygen saturation ($70\%$ to $100\%\text{ SpO}_2$) and heart rate. | GPIO 35 (ADC1) |
+| **LED Indicators / Buzzer** | Visual and acoustic alert system for critical situations. | GPIO 25, 26, 27 |
 
 ---
 
-## 🚥 Matriz de Triaje de 3 Estados y Lógica Sonora
+### 📊 Real-Time Telemetry
 
-| Estado | Condiciones de Activación | Indicador Visual | Respuesta Sonora | Salida LCD |
-| :--- | :--- | :--- | :--- | :--- |
-| **ÓPTIMO** | SpO2 >= 95%, Radiación < 15 mSv, Fuerza G entre 0.2g y 2.5g | LED Verde | Pulso único de confirmación (880 Hz, 200 ms) | `ESTADO: OPTIMO` |
-| **PRECAUCIÓN** | SpO2 entre 90-94% **ó** Radiación entre 15-30 mSv | LED Amarillo | Tono intermedio cada 2 s (600 Hz, 300 ms) | `PRECAUCION!` |
-| **CRÍTICO** | SpO2 < 90% **ó** Radiación > 30 mSv **ó** Fuerza G > 2.5g / < 0.2g | LED Rojo | Alarma continua e intensa (1200 Hz, 400 ms) | `ALERTA CRITICA` / `IMPACTO / CAIDA` |
-
----
-
-## 📊 Telemetría en Tiempo Real (JSON)
-
-El sistema genera un flujo continuo de telemetría serial a **115200 baudios**, formateada en JSON estandarizado para su consumo por interfaces de misión o modelos de inteligencia artificial:
+The system generates a continuous data stream in **JSON** format, made available to central control systems or artificial intelligence models:
 
 ```json
 {
-  "spo2": 98,
-  "hr": 70,
-  "rad": 4.5,
-  "temp": 24.50,
-  "g_force": 1.05,
-  "fall": false,
-  "status": "OPTIMAL"
+  "spo2": 70,
+  "hr": 140,
+  "rad": 38.30,
+  "temp": 24.00,
+  "alert": true
 }
-🧪 Pruébalo en vivo en Wokwi (Sin instalar nada)
-Accede a nuestra simulación pública en Wokwi:
-
-🔗 Simulador VitalSpace AI en Wokwi
-
-Haz clic en el botón Play (▶) para iniciar la simulación.
-
-Abre el Serial Monitor a 115200 baud para observar la telemetría en vivo.
-
-Realiza tus pruebas de estrés:
-
-Estado Seguro: Mantén SpO2 alto, radiación baja y MPU6050 en reposo (Z: 1g). Verás el LED verde encendido y la pantalla en ESTADO: OPTIMO.
-
-Estado de Precaución: Ajusta la radiación a rango medio (15-30 mSv) o baja el SpO2 a 92%. El LED amarillo se encenderá emitiendo un pitido cada 2 segundos.
-
-Simula un Impacto o Emergencia: Cambia la aceleración del MPU6050 a >2.5g o baja el SpO2 por debajo de 90%. El sistema cambiará a IMPACTO / CAIDA o ALERTA CRITICA, activando el LED rojo y la alarma continua.
-
-👥 Equipo VitalSpace AI
-Desarrollo y Prototipado: Iván y equipo VitalSpace AI.
-
-Evento Local: NASA Space Apps Challenge 2026.
-
-Proyecto desarrollado con pasión por la tecnología y la exploración espacial.
+🧪 Try it live on Wokwi (No installation required)Access our public simulation on Wokwi:https://wokwi.com/projects/478783474764323841Click the Play (Start) button.Perform your own stress tests:Safe State: Keep oxygen high and radiation low. You will see the green LED turn on and the OPTIMO status on the screen.Simulate an Emergency: Turn the radiation knob to the right or lower oxygen below $90\%$. The system will switch to ALERTA CRITICA, turn on the red LED, and immediately trigger the buzzer alarm.👥 VitalSpace AI TeamDevelopment & Prototyping: Ivan and the VitalSpace AI team.Local Event: Universal Event — NASA Space Apps Challenge 2026Project developed with passion for technology and space exploration
