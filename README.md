@@ -42,7 +42,7 @@ Utilizamos un microcontrolador **ESP32 DevKit V1** como centro de cómputo local
 ## 📊 Telemetría en Tiempo Real (JSON)
 
 El sistema genera un flujo continuo de telemetría serial a **115200 baudios**, formateada en JSON estandarizado para su consumo por interfaces de misión o modelos de inteligencia artificial:
----
+
 ```json
 {
   "spo2": 98,
@@ -53,12 +53,10 @@ El sistema genera un flujo continuo de telemetría serial a **115200 baudios**, 
   "fall": false,
   "status": "OPTIMAL"
 }
-
----
-##🧪 Pruébalo en vivo en Wokwi (Sin instalar nada)
+🧪 Pruébalo en vivo en Wokwi (Sin instalar nada)
 Accede a nuestra simulación pública en Wokwi:
 
-##🔗 Simulador VitalSpace AI en Wokwi
+🔗 Simulador VitalSpace AI en Wokwi
 
 Haz clic en el botón Play (▶) para iniciar la simulación.
 
@@ -72,7 +70,7 @@ Estado de Precaución: Ajusta la radiación a rango medio (15-30 mSv) o baja el 
 
 Simula un Impacto o Emergencia: Cambia la aceleración del MPU6050 a >2.5g o baja el SpO2 por debajo de 90%. El sistema cambiará a IMPACTO / CAIDA o ALERTA CRITICA, activando el LED rojo y la alarma continua.
 
-##👥 Equipo VitalSpace AI
+👥 Equipo VitalSpace AI
 Desarrollo y Prototipado: Iván y equipo VitalSpace AI.
 
 Evento Local: NASA Space Apps Challenge 2026.
