@@ -53,3 +53,6 @@ El sistema genera un flujo continuo de telemetría serial a **115200 baudios**, 
   "fall": false,
   "status": "OPTIMAL"
 }
+
+---
+##hola
