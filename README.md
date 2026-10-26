@@ -53,4 +53,12 @@ El sistema genera un flujo continuo de telemetría serial a **115200 baudios**, 
   "fall": false,
   "status": "OPTIMAL"
 }
-🧪 Pruébalo en vivo en Wokwi (Sin instalar nada)Accede a nuestra simulación pública en Wokwi:🔗 Simulador VitalSpace AI en WokwiHaz clic en el botón Play (▶) para iniciar la simulación.Abre el Serial Monitor a 115200 baud para observar la telemetría en vivo.Realiza tus pruebas de estrés:Estado Seguro: Mantén $SpO_2$ alto, radiación baja y MPU6050 en reposo (Z: 1g). Verás el LED verde encendido y la pantalla en ESTADO: OPTIMO.Estado de Precaución: Ajusta la radiación a rango medio ($15-30\text{ mSv}$) o baja el $SpO_2$ a $92\%$. El LED amarillo se encenderá emitiendo un pitido cada 2 segundos.Simula un Impacto o Emergencia: Cambia la aceleración del MPU6050 a $>2.5\,g$ o baja el $SpO_2$ por debajo de $90\%$. El sistema cambiará a IMPACTO / CAIDA o ALERTA CRITICA, activando el LED rojo y la alarma continua.👥 Equipo VitalSpace AIDesarrollo y Prototipado: Iván y equipo VitalSpace AI.Evento Local: NASA Space Apps Challenge 2026.Proyecto desarrollado con pasión por la tecnología y la exploración espacial.
+🧪 Pruébalo en vivo en Wokwi (Sin instalar nada)Accede a nuestra simulación pública en Wokwi:
+🔗 Simulador VitalSpace AI en WokwiHaz clic en el botón Play (▶) para iniciar la simulación.Abre el Serial Monitor a 115200 baud para observar la telemetría en vivo
+Realiza tus pruebas de estrés:Estado Seguro: Mantén $SpO_2$ alto, radiación baja y MPU6050 en reposo (Z: 1g).
+Verás el LED verde encendido y la pantalla en ESTADO: OPTIMO.Estado de Precaución: Ajusta la radiación a rango medio ($15-30\text{ mSv}$) o baja el $SpO_2$ a $92\%$.
+El LED amarillo se encenderá emitiendo un pitido cada 2 segundos.
+Simula un Impacto o Emergencia: Cambia la aceleración del MPU6050 a $>2.5\,g$ o baja el $SpO_2$ por debajo de $90\%$.
+El sistema cambiará a IMPACTO / CAIDA o ALERTA CRITICA, activando el LED rojo y la alarma continua.
+👥 Equipo VitalSpace AIDesarrollo y Prototipado: Iván y equipo VitalSpace AI.
+Evento Local: NASA Space Apps Challenge 2026.Proyecto desarrollado con pasión por la tecnología y la exploración espacial.
