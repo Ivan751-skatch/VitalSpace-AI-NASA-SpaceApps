@@ -42,7 +42,7 @@ Utilizamos un microcontrolador **ESP32 DevKit V1** como centro de cómputo local
 ## 📊 Telemetría en Tiempo Real (JSON)
 
 El sistema genera un flujo continuo de telemetría serial a **115200 baudios**, formateada en JSON estandarizado para su consumo por interfaces de misión o modelos de inteligencia artificial:
-
+---
 ```json
 {
   "spo2": 98,
