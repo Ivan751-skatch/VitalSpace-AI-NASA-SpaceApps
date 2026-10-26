@@ -1,0 +1,23 @@
+##🧪 Live Demo on Wokwi (No Setup Required)
+Access our public simulation on Wokwi:
+
+🔗 VitalSpace AI Wokwi Simulator
+
+Click the Play (▶) button to start the simulation.
+
+Open the Serial Monitor set to 115200 baud to observe live telemetry.
+
+Perform your stress tests:
+
+Nominal/Safe State: Keep SpO2 high, radiation low, and MPU6050 at rest (Z: 1g). You will see the Green LED turn on and the display show ESTADO: OPTIMO.
+
+Warning State: Adjust radiation to mid-range (15-30 mSv) or lower SpO2 to 92%. The Yellow LED will turn on, emitting a pulse every 2 seconds.
+
+Simulate Impact or Emergency: Set MPU6050 acceleration to >2.5g or drop SpO2 below 90%. The system will switch to IMPACTO / CAIDA or ALERTA CRITICA, activating the Red LED and continuous alarm.
+
+👥 VitalSpace AI Team
+Development & Prototyping: Iván and the VitalSpace AI Team.
+
+Local Event: NASA Space Apps Challenge 2026.
+
+Project developed with passion for technology and space exploration.
